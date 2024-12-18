@@ -22,19 +22,18 @@ const GetApi = ({ uploadedData, getAllData }) => {
   const fetchImages = async () => {
     try {
       const response = await getAllData();
-      // Ensure response is an array
-      setDatas(Array.isArray(response) ? response : []);
+      setDatas(response);
     } catch (error) {
       console.error("Error fetching images:", error);
-      setDatas([]); // Fallback to an empty array in case of an error
     }
   };
 
-  // Scroll page and show button
+  // scroll page and show button
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      // Show the button when the user scrolls down 300px from the top
       if (window.scrollY > 300) {
         setShowButton(true);
       } else {
@@ -44,6 +43,7 @@ const GetApi = ({ uploadedData, getAllData }) => {
 
     window.addEventListener("scroll", handleScroll);
 
+    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -54,11 +54,14 @@ const GetApi = ({ uploadedData, getAllData }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <Navbar />
+
       <Center />
       <Card datas={datas} />
+
       <Swipercard datas={datas} />
+
       <div className="Contest py-[5rem]  h-[80vh]">
         <Latest />
       </div>
@@ -70,25 +73,25 @@ const GetApi = ({ uploadedData, getAllData }) => {
           Recipe Collection
         </h1>
         <p className="sm:w-[25rem] text-center py-[1rem]">
-          From quick weeknight dinner to elaborate weekend projects, we have
-          recipes to fit every lifestyle and taste.
+          From quick weeknigth dinner to elaborate weekend projects, we have
+          recipes to fit every lifestyel and taste.
         </p>
         <div className="grid gap-4 sm:grid-cols-4 py-5">
-          {Array.isArray(datas) && datas.length === 0 ? (
+          {datas.length === 0 ? (
             <p>No images uploaded yet.</p>
           ) : (
             datas
               .slice(0, 4)
               .map((data, index) => (
                 <RecipeCollection
-                  key={`${data.id || index}`}
+                  key={data.id || index}
                   data={data}
                   index={index}
                 />
               ))
           )}
         </div>
-        <Link to={`/AllRecipes`}>
+        <Link to="/AllRecipes">
           <button className="shadow-lg shadow-gray bg-[#ED8E00] text-white px-4 py-2 rounded-md font-bold hover:bg-[#ed8e00c9] transition-colors duration-300">
             See All Recipes
           </button>
@@ -99,6 +102,7 @@ const GetApi = ({ uploadedData, getAllData }) => {
       {showButton && (
         <div
           onClick={scrollToTop}
+          // id="home"
           className="fixed bottom-20 right-10 text-3xl shadow-lg shadow-gray bg-[#ED8E00] text-white rounded-full font-bold hover:bg-[#ed8e00c9] transition-colors duration-300 cursor-pointer"
         >
           <RiArrowUpDoubleFill />
