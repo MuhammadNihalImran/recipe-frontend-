@@ -27,6 +27,7 @@ const DetailsRecipe = () => {
   };
 
   const deleteHanlderRecipe = async (id) => {
+    console.log("datehandler id: ", id);
     await deleteRecipe(id);
     navigate("/");
   };
@@ -74,14 +75,8 @@ const DetailsRecipe = () => {
             recipeDetails.ingredients.map((item, index) =>
               item ? (
                 <li key={item._id || index} className="list-item  gap-2">
-                  <div className="flex items-center  gap-3">
+                  <div className="flex text-l font-bold items-center  gap-3">
                     {item.name}
-                    <span className="flex gap-2">
-                      <MdOutlineDelete
-                        onClick={() => deletehandler(id, item._id)}
-                        className="cursor-pointer"
-                      />
-                    </span>
                   </div>
                 </li>
               ) : null
@@ -96,14 +91,8 @@ const DetailsRecipe = () => {
             recipeDetails.instractions.map((item, index) =>
               item ? (
                 <li key={item._id || index} className="list-item ">
-                  <div className="flex items-center  gap-3">
+                  <div className="flex items-center text-l font-bold  gap-3">
                     {item.name}
-                    <span className="flex gap-2">
-                      <MdOutlineDelete
-                        onClick={() => deletehandler(id, item._id)}
-                        className="cursor-pointer"
-                      />
-                    </span>
                   </div>
                 </li>
               ) : null

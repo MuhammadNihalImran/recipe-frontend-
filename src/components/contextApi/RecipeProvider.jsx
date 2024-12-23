@@ -5,13 +5,20 @@ export const RecipeContext = createContext();
 export const RecipeProvider = ({ children }) => {
   const [datas, setDatas] = useState(() => {
     // Try to get stored data from localStorage
-    const savedData = localStorage.getItem("recipes");
-    return savedData ? JSON.parse(savedData) : [];
+    try {
+      const savedData = localStorage.getItem("recipes");
+      return savedData ? JSON.parse(savedData) : []; // Default to empty array if no data or invalid
+    } catch (error) {
+      console.error("Error parsing localStorage data:", error);
+      return []; // Fallback to empty array if there's an error with localStorage
+    }
   });
 
   useEffect(() => {
-    // Save the data to localStorage whenever it changes
-    localStorage.setItem("recipes", JSON.stringify(datas));
+    if (Array.isArray(datas)) {
+      console.log("Saving updated datas to localStorage:", datas);
+      localStorage.setItem("recipes", JSON.stringify(datas));
+    }
   }, [datas]);
 
   return (

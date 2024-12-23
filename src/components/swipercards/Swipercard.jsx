@@ -43,17 +43,22 @@ const Swipercard = ({ datas }) => {
           ) : (
             // eslint-disable-next-line react/jsx-key
             //  <Link
-            datas.map((data, index) => (
-              <SwiperSlide key={index}>
-                <Link to={`/details/${data._id}`}>
-                  <img
-                    className="cursor-pointer"
-                    src={data.image.url}
-                    alt={data.image.filename}
-                  />
-                </Link>
-              </SwiperSlide>
-            ))
+            datas.map((data, index) => {
+              // Log each `data` object to verify its structure
+              console.log("Data at index", data._id);
+
+              return (
+                <SwiperSlide key={index}>
+                  <Link to={`/details/${data?._id}`}>
+                    <img
+                      className="cursor-pointer"
+                      src={data?.image?.url}
+                      alt={data?.image?.filename}
+                    />
+                  </Link>
+                </SwiperSlide>
+              );
+            })
           )}
         </Swiper>
       </div>

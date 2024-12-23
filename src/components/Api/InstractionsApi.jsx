@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/recipes";
+const API_URL = "https://backend-recipe.netlify.app/.netlify/functions/api/recipes";
 
 export const getAllInstractions = async (id) => {
   const response = await axios.get(`${API_URL}/${id}/instraction`);

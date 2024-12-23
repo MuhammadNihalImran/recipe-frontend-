@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/recipes";
+const API_URL =
+  "https://backend-recipe.netlify.app/.netlify/functions/api/recipes";
 
 export const getAllData = async () => {
   const response = await axios.get(API_URL);
@@ -26,12 +27,13 @@ export const addData = async (formData) => {
   }
 };
 
-export const deleteRecipe = async ({ id }) => {
+export const deleteRecipe = async (id) => {
   try {
+    console.log("api delete id: ", id);
     const response = await axios.delete(`${API_URL}/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Error deleting ingredient:", error);
+    console.error("Error deleting Recipe:", error);
     throw error;
   }
 };
@@ -43,6 +45,7 @@ export const editRecipeData = async (id, formData) => {
         "Content-Type": "multipart/form-data",
       },
     });
+
     return response.data.updatedRecipe;
   } catch (error) {
     console.error("Error uploading recipe:", error);

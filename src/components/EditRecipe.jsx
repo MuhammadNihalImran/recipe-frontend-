@@ -14,15 +14,28 @@ const EditRecipe = ({ setUploadedData }) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (datas.length === 0) {
-      const fetchedData = JSON.parse(localStorage.getItem("recipes"));
+    if (!datas.length) {
+      const fetchedData = JSON.parse(localStorage.getItem("recipes")) || [];
       setDatas(fetchedData);
     }
-    const recipe = datas.find((data) => data._id === id);
+
+    const recipe = datas.find((data) => data?._id === id);
     if (recipe) {
       setNewData(recipe);
+    } else {
+      console.warn(`Recipe with ID ${id} not found.`);
     }
   }, [id, datas, setDatas]);
+  // useEffect(() => {
+  //   if (datas.length === 0) {
+  //     const fetchedData = JSON.parse(localStorage.getItem("recipes"));
+  //     setDatas(fetchedData);
+  //   }
+  //   const recipe = datas.find((data) => data._id === id);
+  //   if (recipe) {
+  //     setNewData(recipe);
+  //   }
+  // }, [id, datas, setDatas]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,13 +57,26 @@ const EditRecipe = ({ setUploadedData }) => {
 
     try {
       const addedData = await editRecipeData(id, formData);
+      console.log("Updated Recipe Data:", addedData);
+
+      if (!addedData || !addedData._id) {
+        // Fallback: use the existing `id`
+        console.warn(
+          "Updated data missing _id, using existing id as fallback."
+        );
+        addedData._id = id;
+      }
 
       setUploadedData(addedData);
+
+      // Update the context state
       setDatas((prevDatas) =>
-        prevDatas.map((data) => (data._id === id ? addedData : data))
+        prevDatas.map((data) =>
+          data._id === id ? { ...data, ...addedData } : data
+        )
       );
-      inputRef.current.blur();
-      navigate(`/details/${id}`); // Navigate to homepage after successful update
+
+      navigate(`/details/${id}`); // Navigate to recipe details
     } catch (error) {
       console.error("Error uploading data:", error);
     }
