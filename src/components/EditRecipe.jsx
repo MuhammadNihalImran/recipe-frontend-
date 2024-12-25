@@ -37,7 +37,8 @@ const EditRecipe = ({ setUploadedData }) => {
   //   }
   // }, [id, datas, setDatas]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async ( event) => {
+    console.log("edit id ", id);
     event.preventDefault();
     const formData = new FormData();
 
@@ -59,13 +60,13 @@ const EditRecipe = ({ setUploadedData }) => {
       const addedData = await editRecipeData(id, formData);
       console.log("Updated Recipe Data:", addedData);
 
-      if (!addedData || !addedData._id) {
-        // Fallback: use the existing `id`
-        console.warn(
-          "Updated data missing _id, using existing id as fallback."
-        );
-        addedData._id = id;
-      }
+      // if (!addedData || !addedData._id) {
+      //   // Fallback: use the existing `id`
+      //   console.warn(
+      //     "Updated data missing _id, using existing id as fallback."
+      //   );
+      //   addedData._id = id;
+      // }
 
       setUploadedData(addedData);
 
@@ -75,7 +76,8 @@ const EditRecipe = ({ setUploadedData }) => {
           data._id === id ? { ...data, ...addedData } : data
         )
       );
-
+      
+       
       navigate(`/details/${id}`); // Navigate to recipe details
     } catch (error) {
       console.error("Error uploading data:", error);

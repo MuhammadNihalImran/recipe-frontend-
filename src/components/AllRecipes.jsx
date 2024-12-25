@@ -25,25 +25,26 @@ const AllRecipes = () => {
           <p>No images uploaded yet.</p>
         ) : (
           datas.map((data, index) => {
+            const reverseData = datas[datas.length - 1 - index];
             // Split the description into words
-            const words = data.description.split(" ");
+            const words = reverseData.description.split(" ");
 
             // Limit the text to 20 words
             const textToShow =
               words.length > 8
                 ? words.slice(0, 8).join(" ") + "..."
-                : data.description;
+                : reverseData.description;
 
             return (
               <div
-                key={data.id || index}
+                key={reverseData.id || index}
                 className="card rounded-lg"
                 style={{ width: "18rem", height: "25rem", padding: "1rem" }}
               >
                 <img
-                  src={data.image.url}
+                  src={reverseData.image.url}
                   className="card-img-top shadow-sm object-cover"
-                  alt={data.image.filename}
+                  alt={reverseData.image.filename}
                   style={{
                     borderRadius: "15px",
                     height: "12rem",
@@ -51,11 +52,11 @@ const AllRecipes = () => {
                 />
                 <div className="card-body p-0">
                   <h5 className="card-title text-black text-xl font-bold pt-[1rem]">
-                    {data.title}
+                    {reverseData.title}
                   </h5>
                   <p className="card-text pb-[1rem]">{textToShow}</p>
                   <Link
-                    to={`/details/${data._id}`}
+                    to={`/details/${reverseData._id}`}
                     className="w-[90%] btn mt-auto font-bold border-1 border-black hover:bg-[#ED8E00] hover:border-none hover:text-white"
                     style={{
                       position: "absolute",
